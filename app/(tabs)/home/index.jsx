@@ -11,7 +11,7 @@ export default function home() {
       <StatusBar style="auto" />
       <SafeAreaView className=" pt-8">
         <View className="px-4 pb-4">
-          <Search />
+          <Search placeholder={"Tìm kiếm"} />
         </View>
         <ScrollView>
           <View>
