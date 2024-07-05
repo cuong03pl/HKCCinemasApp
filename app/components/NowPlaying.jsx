@@ -32,6 +32,23 @@ export default function NowPlaying() {
             </Text>
           </View>
         </View>
+        <View className="flex-col items-center">
+          <Image
+            className="w-[310px] min-h-[440px]"
+            source={require("../../assets/Images/Slider1.png")}
+          ></Image>
+          <View className="flex-col items-center mt-4">
+            <Link
+              href={"/home/moviedetail"}
+              className="text-[24px] font-bold text-primary"
+            >
+              Avengers - Infinity War
+            </Link>
+            <Text className="text-subtext">
+              2h29m • Action, adventure, sci-fi
+            </Text>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
