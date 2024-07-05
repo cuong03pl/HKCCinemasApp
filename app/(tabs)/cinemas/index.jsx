@@ -7,7 +7,7 @@ import CinemasItem from "../../components/CinemasItem";
 import CinemasDetail from "../../components/CinemasDetail";
 export default function cinemas() {
   return (
-    <View className="bg-primary h-full w-full pb-[70px] px-[16px]">
+    <View className="bg-primary h-full w-full px-[16px]">
       <StatusBar style="auto" />
       <SafeAreaView className=" ">
         <View className="mb-4 ">
@@ -15,7 +15,7 @@ export default function cinemas() {
             Chọn rạp chiếu
           </Text>
         </View>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
           {/* search */}
           <View>
             <Search placeholder={"Tìm rạp phim"} />
@@ -25,7 +25,9 @@ export default function cinemas() {
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingHorizontal: 15 }}
+              contentContainerStyle={{
+                paddingHorizontal: 15,
+              }}
               className="flex-row "
             >
               <CinemasItem />

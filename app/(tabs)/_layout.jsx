@@ -35,7 +35,7 @@ export default function Layout() {
         }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="cinemas/index"
+        name="cinemas"
         options={{
           headerShown: false,
           title: "Cinemas",

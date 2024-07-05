@@ -38,7 +38,7 @@ export default function App() {
           ></ButtonCustom>
         </View>
       </SafeAreaView>
-      <Redirect href={"/cinemas"} />
+      <Redirect href={"/home"} />
     </View>
   );
 }

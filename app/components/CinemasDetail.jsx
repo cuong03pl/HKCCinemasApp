@@ -1,10 +1,14 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 
 export default function CinemasDetail() {
   return (
-    <View className="flex-row items-center pt-3 border-b border-[#908e8e84] border-solid pb-4">
+    <Link
+      href={"/cinemas/cinemasdetails"}
+      className="flex-row items-center pt-3 border-b border-[#908e8e84] border-solid pb-4"
+    >
       <View className="border border-solid border-[#908e8e] rounded-lg mr-4">
         <Image
           className="w-[60px] h-[60px] "
@@ -24,6 +28,6 @@ export default function CinemasDetail() {
           <MaterialIcons name="arrow-forward-ios" size={20} color="#FFFFFF" />
         </View>
       </View>
-    </View>
+    </Link>
   );
 }

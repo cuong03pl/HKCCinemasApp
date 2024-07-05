@@ -10,7 +10,7 @@ export default function movie() {
     setToggleButton(buttonName);
   };
   return (
-    <View className="bg-primary h-full w-full pb-[140px] px-[16px]">
+    <View className="bg-primary h-full w-full  px-[16px]">
       <StatusBar style="auto" />
       <SafeAreaView className=" pt-8">
         <View>
@@ -44,7 +44,7 @@ export default function movie() {
               />
             </View>
           </View>
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ paddingBottom: 70 }}>
             <View className="flex-row flex-wrap justify-between mt-8 ">
               <MovieItem />
               <MovieItem />
