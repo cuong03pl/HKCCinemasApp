@@ -1,13 +1,25 @@
 import { View, Text, ScrollView, Image } from "react-native";
-import React from "react";
-import { AntDesign } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
 import MovieItem from "./MovieItem";
+import { GetFilmsWithParams } from "../Services/ServiceAPI";
 
-export default function ComingSoon() {
+export default function ComingSoon({ params, title, isUpcoming }) {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GetFilmsWithParams(params);
+        setData(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [params]);
   return (
     <View className="my-[32px]">
       <View className="px-4 flex-row items-center justify-between">
-        <Text className="text-[24px] text-primary font-bold">Coming Soon</Text>
+        <Text className="text-[24px] text-primary font-bold">{title}</Text>
         <Text className="text-[14px] font-normal text-[#FCC434] ">See all</Text>
       </View>
       <ScrollView
@@ -16,15 +28,13 @@ export default function ComingSoon() {
         showsHorizontalScrollIndicator={false}
         className="flex-row gap-4 mt-6"
       >
-        <View>
-          <MovieItem />
-        </View>
-        <View>
-          <MovieItem />
-        </View>
-        <View>
-          <MovieItem />
-        </View>
+        {data.map((item, index) => {
+          return (
+            <View key={index}>
+              <MovieItem data={item} isUpcoming={isUpcoming} />
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );

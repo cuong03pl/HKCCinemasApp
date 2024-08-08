@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Image } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 
-export default function NowPlaying() {
+export default function NowPlaying({ data }) {
   return (
     <View className="my-[32px]">
       <View className="px-4 flex-row items-center justify-between">
@@ -15,40 +15,28 @@ export default function NowPlaying() {
         showsHorizontalScrollIndicator={false}
         className="flex-row gap-4 mt-6"
       >
-        <View className="flex-col items-center">
-          <Image
-            className="w-[310px] min-h-[440px]"
-            source={require("../../assets/Images/Slider1.png")}
-          ></Image>
-          <View className="flex-col items-center mt-4">
-            <Link
-              href={"/home/moviedetail"}
-              className="text-[24px] font-bold text-primary"
-            >
-              Avengers - Infinity War
-            </Link>
-            <Text className="text-subtext">
-              2h29m • Action, adventure, sci-fi
-            </Text>
-          </View>
-        </View>
-        <View className="flex-col items-center">
-          <Image
-            className="w-[310px] min-h-[440px]"
-            source={require("../../assets/Images/Slider1.png")}
-          ></Image>
-          <View className="flex-col items-center mt-4">
-            <Link
-              href={"/home/moviedetail"}
-              className="text-[24px] font-bold text-primary"
-            >
-              Avengers - Infinity War
-            </Link>
-            <Text className="text-subtext">
-              2h29m • Action, adventure, sci-fi
-            </Text>
-          </View>
-        </View>
+        {data.map((item, index) => {
+          return (
+            <View key={index} className="flex-col items-center">
+              <Image
+                className="w-[310px] min-h-[440px] rounded-xl"
+                src={`https://hkccinemas.azurewebsites.net/${item.image}`}
+              ></Image>
+              <View className="flex-col items-center mt-4">
+                <Link
+                  numberOfLines={1}
+                  href={"/home/moviedetail"}
+                  className="text-[24px] max-w-[300px] text-center line-clamp-1 font-bold text-primary "
+                >
+                  {item.title}
+                </Link>
+                <Text className="text-subtext">
+                  {`${item.duration}m`} • Action, adventure, sci-fi
+                </Text>
+              </View>
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );
