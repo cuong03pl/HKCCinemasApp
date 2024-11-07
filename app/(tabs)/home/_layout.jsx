@@ -13,6 +13,10 @@ export default function _layout() {
         name="moviedetail"
         options={{ headerShown: false }}
       ></Stack.Screen>
+      <Stack.Screen
+        name="seeall"
+        options={{ headerShown: false }}
+      ></Stack.Screen>
     </Stack>
   );
 }

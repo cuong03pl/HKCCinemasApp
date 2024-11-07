@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { convertTime } from "../utils/convertTime";
 import { GetAllCategoriesByFilmId } from "../Services/ServiceAPI";
+import { Link } from "expo-router";
 
 export default function MovieItem({ data, isUpcoming }) {
   const [categories, setCategories] = useState([]);
@@ -26,12 +27,16 @@ export default function MovieItem({ data, isUpcoming }) {
         src={`https://hkccinemas.azurewebsites.net/${data?.image}`}
       ></Image>
       <View className="flex-col mt-4">
-        <Text
+        <Link
           numberOfLines={1}
+          href={{
+            pathname: "/home/moviedetail",
+            params: { id: data.id },
+          }}
           className="text-[16px] line-clamp-2 font-bold text-title"
         >
           {data.title}
-        </Text>
+        </Link>
         <View className="mt-3 ">
           <View className="flex-row gap-2 items-center">
             <AntDesign name="videocamera" size={16} color="#F2F2F2" />

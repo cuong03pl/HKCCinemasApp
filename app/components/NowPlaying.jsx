@@ -7,7 +7,15 @@ export default function NowPlaying({ data }) {
     <View className="my-[32px]">
       <View className="px-4 flex-row items-center justify-between">
         <Text className="text-[24px] text-primary font-bold">Now playing</Text>
-        <Text className="text-[14px] font-normal text-[#FCC434] ">See all</Text>
+        <Link
+          href={{
+            pathname: "/home/seeall",
+            params: { path: "getNowShowingFilms" },
+          }}
+          className="text-[14px] font-normal text-[#FCC434] "
+        >
+          See all
+        </Link>
       </View>
       <ScrollView
         horizontal

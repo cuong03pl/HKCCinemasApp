@@ -2,6 +2,7 @@ import { View, Text, ScrollView, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import MovieItem from "./MovieItem";
 import { GetFilmsWithParams } from "../Services/ServiceAPI";
+import { Link } from "expo-router";
 
 export default function ComingSoon({ params, title, isUpcoming }) {
   const [data, setData] = useState([]);
@@ -20,7 +21,15 @@ export default function ComingSoon({ params, title, isUpcoming }) {
     <View className="my-[32px]">
       <View className="px-4 flex-row items-center justify-between">
         <Text className="text-[24px] text-primary font-bold">{title}</Text>
-        <Text className="text-[14px] font-normal text-[#FCC434] ">See all</Text>
+        <Link
+          href={{
+            pathname: "/home/seeall",
+            params: { path: params },
+          }}
+          className="text-[14px] font-normal text-[#FCC434] "
+        >
+          See all
+        </Link>
       </View>
       <ScrollView
         horizontal
