@@ -25,7 +25,10 @@ export default function NowPlaying({ data }) {
               <View className="flex-col items-center mt-4">
                 <Link
                   numberOfLines={1}
-                  href={"/home/moviedetail"}
+                  href={{
+                    pathname: "/home/moviedetail",
+                    params: { id: item.id },
+                  }}
                   className="text-[24px] max-w-[300px] text-center line-clamp-1 font-bold text-primary "
                 >
                   {item.title}

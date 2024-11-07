@@ -1,26 +1,78 @@
 import { View, Text, Image, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonCustom from "../../components/ButtonCustom";
 import Director from "../../components/Director";
 import Comment from "../../components/Comment";
+import { useLocalSearchParams } from "expo-router";
+import {
+  getActorByFimlId,
+  GetAllCategoriesByFilmId,
+  getFilmById,
+} from "../../Services/ServiceAPI";
+import { convertTime } from "../../utils/convertTime";
 
 export default function MovieDetail() {
+  const { id } = useLocalSearchParams();
+  const [movie, setMovie] = useState({});
+  const [categories, setCategories] = useState([]);
+  const [actors, setActors] = useState([]);
+
+  // get film
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getFilmById(id);
+        setMovie(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  // get category
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GetAllCategoriesByFilmId(id);
+
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  // get actor
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getActorByFimlId(id);
+
+        setActors(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
   return (
     <ScrollView className="h-full w-full bg-primary pb-[140px]">
       <Image
         className="h-[240px] w-full"
-        source={require("../../../assets/Images/Slider1.png")}
+        src={`https://hkccinemas.azurewebsites.net/${movie?.background}`}
       />
       <View className="px-4 mt-4">
         <View>
           <Text className="text-primary font-bold text-[24px]">
-            Avengers: Infinity War
+            {movie?.title}
           </Text>
           <Text className="text-subtext opacity-75 font-normal italic text-[16px]">
-            Chưa biết chừng
+            {movie?.synopsis}
           </Text>
           <Text className="text-subtext text-[16px] mt-[12px]">
-            2h29m • 16.12.2022
+            {movie?.duration}m • {convertTime(movie?.releaseDate)}
           </Text>
           <ButtonCustom
             title="Đặt vé"
@@ -31,38 +83,32 @@ export default function MovieDetail() {
         <View className="mt-8">
           <View className="flex-row items-center">
             <Text className="text-[16px] text-subtext w-[128px]">
-              Movie genre:
+              Thể loại:
             </Text>
             <Text className="text-[16px] text-primary font-bold flex-1 block flex-wrap">
-              Action, adventure, sci-fi
+              {categories.map((item, index) => {
+                return (
+                  <Text key={index} className="text-primary">
+                    {`${item.name}${index < categories.length - 1 ? ", " : ""}`}
+                  </Text>
+                );
+              })}
             </Text>
           </View>
           <View className="flex-row items-center my-4">
             <Text className="text-[16px] text-subtext w-[128px]">
-              Movie genre:
+              Đạo diễn:
             </Text>
             <Text className="text-[16px] text-primary font-bold flex-1 block flex-wrap">
-              Action, adventure, sci-fi
-            </Text>
-          </View>
-          <View className="flex-row items-center">
-            <Text className="text-[16px] text-subtext w-[128px]">
-              Movie genre:
-            </Text>
-            <Text className="text-[16px] text-primary font-bold flex-1 block flex-wrap">
-              Action, adventure, sci-fi
+              {movie?.director}
             </Text>
           </View>
         </View>
         <View className="mt-8 ">
-          <Text className="text-[24px] font-bold text-primary mb-6">
+          {/* <Text className="text-[24px] font-bold text-primary mb-6">
             Storyline
-          </Text>
-          <Text className=" text-primary text-[16px] ">
-            As the Avengers and their allies have continued to protect the world
-            from threats too large for any one hero to handle, a new danger has
-            emerged from the cosmic shadows: Thanos....
-          </Text>
+          </Text> */}
+          <Text className=" text-primary text-[16px] ">{movie?.detail}</Text>
         </View>
       </View>
       <View className="mt-8 ">
@@ -75,9 +121,9 @@ export default function MovieDetail() {
           showsHorizontalScrollIndicator={false}
           className="flex-row "
         >
-          <Director />
-          <Director />
-          <Director />
+          {actors.map((item, index) => {
+            return <Director data={item} key={index} />;
+          })}
         </ScrollView>
       </View>
       <View className="mt-8 ">

@@ -18,6 +18,10 @@ export const getAllActors = async (params) => {
   const res = await get("Actors/getAllActors", params);
   return res;
 };
+export const getActorByFimlId = async (id, params) => {
+  const res = await get(`Actors/getActorByFimlId/${id}`, params);
+  return res;
+};
 
 export const getAllCinemasCategories = async (params) => {
   const res = await get("CinemasCategories", params);
