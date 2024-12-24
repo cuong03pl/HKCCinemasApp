@@ -1,11 +1,65 @@
-import { View, Text, ScrollView } from "react-native";
-import React, { useState } from "react";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Search from "../../components/Search";
 import CinemasItem from "../../components/CinemasItem";
 import CinemasDetail from "../../components/CinemasDetail";
+import {
+  getAllCinemasCategories,
+  GetCinemasByCategoryId,
+  GetCinemasCategoryById,
+} from "../../Services/ServiceAPI";
 export default function cinemas() {
+  const [cinemasCategories, setCinemasCategories] = useState([]);
+  const [cinemasCategory, setCinemasCategory] = useState({});
+  const [cinemasCategoryId, setCinemasCategoryId] = useState("");
+  const [cinemas, setCinemas] = useState([]);
+  const [isSelected, setIsSelected] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAllCinemasCategories();
+        setCinemasCategories(response.data);
+        console.log(response.data[0].id);
+
+        setCinemasCategoryId(response.data[0].id);
+        setIsSelected(response.data[0].id);
+        console.log(response);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    if (!cinemasCategoryId) return;
+    const fetchData = async () => {
+      try {
+        console.log(cinemasCategoryId);
+        const response = await GetCinemasByCategoryId(cinemasCategoryId);
+        console.log(response.data);
+
+        setCinemas(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [cinemasCategoryId]);
+  useEffect(() => {
+    if (!cinemasCategoryId) return;
+    const fetchData = async () => {
+      try {
+        const response = await GetCinemasCategoryById(cinemasCategoryId);
+        setCinemasCategory(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [cinemasCategoryId]);
+
   return (
     <View className="bg-primary h-full w-full px-[16px]">
       <StatusBar style="auto" />
@@ -30,11 +84,19 @@ export default function cinemas() {
               }}
               className="flex-row "
             >
-              <CinemasItem />
-              <CinemasItem />
-              <CinemasItem />
-              <CinemasItem />
-              <CinemasItem />
+              {cinemasCategories?.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => setCinemasCategoryId(item.id)}
+                  >
+                    <CinemasItem
+                      item={item}
+                      isSelected={item?.id == cinemasCategoryId}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
             </ScrollView>
           </View>
           {/* danh sach cac rap con */}
@@ -42,17 +104,13 @@ export default function cinemas() {
           <View className="mt-5">
             <View>
               <Text className="text-primary font-bold text-[24px] mb-2">
-                CGV (24)
+                {cinemasCategory?.name}
               </Text>
             </View>
             <View>
-              <CinemasDetail />
-              <CinemasDetail />
-              <CinemasDetail />
-              <CinemasDetail />
-              <CinemasDetail />
-              <CinemasDetail />
-              <CinemasDetail />
+              {cinemas?.map((item, index) => {
+                return <CinemasDetail cinemas={item} key={index} />;
+              })}
             </View>
           </View>
         </ScrollView>

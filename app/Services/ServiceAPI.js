@@ -31,6 +31,12 @@ export const getAllCinemas = async (params) => {
   const res = await get("Cinemas", params);
   return res;
 };
+export const GetCinemasByCategoryId = async (id) => {
+  console.log(`Cinemas/GetCinemasByCategoryId/${id}`);
+
+  const res = await get(`Cinemas/GetCinemasByCategoryId/${id}`);
+  return res;
+};
 export const GetAllComments = async (params) => {
   const res = await get("Comments/GetAllComment", params);
   return res;
@@ -126,6 +132,10 @@ export const GetRoomById = async (id, params) => {
 };
 export const GetCinemasById = async (id, params) => {
   const res = await get(`Cinemas/${id}`, params);
+  return res;
+};
+export const GetCinemasCategoryById = async (id, params) => {
+  const res = await get(`CinemasCategories/${id}`, params);
   return res;
 };
 // create

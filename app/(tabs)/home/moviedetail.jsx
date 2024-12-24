@@ -1,15 +1,16 @@
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import ButtonCustom from "../../components/ButtonCustom";
 import Director from "../../components/Director";
 import Comment from "../../components/Comment";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   getActorByFimlId,
   GetAllCategoriesByFilmId,
   getFilmById,
 } from "../../Services/ServiceAPI";
 import { convertTime } from "../../utils/convertTime";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function MovieDetail() {
   const { id } = useLocalSearchParams();
