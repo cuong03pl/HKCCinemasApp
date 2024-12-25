@@ -32,8 +32,6 @@ export const getAllCinemas = async (params) => {
   return res;
 };
 export const GetCinemasByCategoryId = async (id) => {
-  console.log(`Cinemas/GetCinemasByCategoryId/${id}`);
-
   const res = await get(`Cinemas/GetCinemasByCategoryId/${id}`);
   return res;
 };
@@ -107,7 +105,13 @@ export const GetTotalMoneyWithMonth = async () => {
   const res = await get(`BookingUser/GetTotalMoney`);
   return res;
 };
-
+export const GetAllScheduleByShowDateAndCinemas = async (id, date, params) => {
+  const res = await get(
+    `Schedules/GetAllScheduleByShowDateAndCinemas/${id}?date=${date}`,
+    params
+  );
+  return res;
+};
 // get one
 
 export const GetAllShowDateByCinemasId = async (id, params) => {
@@ -136,6 +140,18 @@ export const GetCinemasById = async (id, params) => {
 };
 export const GetCinemasCategoryById = async (id, params) => {
   const res = await get(`CinemasCategories/${id}`, params);
+  return res;
+};
+export const GetTicketByScheduleId = async (id, params) => {
+  const res = await get(`Tickets/GetTicketByScheduleId/${id}`, params);
+  return res;
+};
+export const GetScheduleById = async (id, params) => {
+  const res = await get(`Schedules/${id}`, params);
+  return res;
+};
+export const GetSeatByRoomId = async (id, params) => {
+  const res = await get(`Seats/GetSeatByRoomId/${id}`, params);
   return res;
 };
 // create
@@ -321,6 +337,10 @@ export const deleteRole = async (id, data, params) => {
 //  check
 export const IsCinemaRoomOccupied = async (params) => {
   const res = await get("Rooms/isCinemaRoomOccupied", params);
+  return res;
+};
+export const isAvailable = async (seatId, id, params) => {
+  const res = await get(`Seats/isAvailable/${seatId}/${id}`, params);
   return res;
 };
 

@@ -2,8 +2,6 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { IMAGE_URL } from "@env";
 export default function CinemasItem({ item, isSelected }) {
-  console.log(isSelected);
-
   return (
     <View className="mr-4">
       <View

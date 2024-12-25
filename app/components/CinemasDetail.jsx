@@ -5,7 +5,13 @@ import { Link } from "expo-router";
 import { IMAGE_URL } from "@env";
 export default function CinemasDetail({ cinemas }) {
   return (
-    <Link href="/cinemas/cinemasdetails" className="no-underline">
+    <Link
+      href={{
+        pathname: "/cinemas/cinemasdetails",
+        params: { id: cinemas.id },
+      }}
+      className="no-underline"
+    >
       <View className="flex-row items-center pt-3 border-b border-[#908e8e84] border-solid pb-4">
         <View className=" rounded-lg mr-4">
           <Image

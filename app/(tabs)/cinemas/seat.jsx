@@ -1,14 +1,98 @@
-import { View, Text, ScrollView } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Col, Grid } from "react-native-easy-grid";
 import ButtonCustom from "../../components/ButtonCustom";
+import { useLocalSearchParams } from "expo-router";
+import {
+  GetScheduleById,
+  GetSeatByRoomId,
+  GetTicketByScheduleId,
+  isAvailable,
+} from "../../Services/ServiceAPI";
+import {
+  convertTimeSpan,
+  convertVND,
+  getDayOfWeek,
+} from "../../utils/function";
+import { convertTime } from "../../utils/convertTime";
 export default function seat() {
-  const [seats, setSeats] = useState([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-  ]);
+  const { id } = useLocalSearchParams();
+  const [ticket, setTicket] = useState({});
+  const [schedule, setSchedule] = useState({});
+  const [seats, setSeats] = useState([]);
+  const [selectSeats, setSelectSeats] = useState([]);
+  const [status, setStatus] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GetTicketByScheduleId(id);
+        setTicket(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GetScheduleById(id);
+
+        setSchedule(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [id]);
+  useEffect(() => {
+    if (!schedule?.room?.id) return;
+    const fetchData = async () => {
+      try {
+        const response = await GetSeatByRoomId(schedule?.room?.id);
+        setSeats(response.data);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [id, schedule]);
+  const handleListSeat = (isSelectId) => {
+    !selectSeats.includes(isSelectId)
+      ? setSelectSeats((prev) => [...prev, isSelectId])
+      : setSelectSeats(selectSeats.filter((seatId) => seatId != isSelectId));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responses = await Promise.all(
+          seats?.map(async (seat) => {
+            return isAvailable(seat.id, id);
+          })
+        );
+
+        const status = {};
+        responses.forEach((res, index) => {
+          status[seats[index].id] = res.data;
+        });
+        setStatus(status);
+      } catch (error) {
+        console.error("Lỗi Axios:", error);
+      }
+    };
+    fetchData();
+  }, [seats]);
   return (
     <View className="bg-primary h-full w-full flex-1">
       <StatusBar style="auto" />
@@ -24,12 +108,20 @@ export default function seat() {
               <View className=" flex-row flex-wrap justify-center gap-1   ">
                 {seats.map((seat, index) => {
                   return (
-                    <View
+                    <TouchableOpacity
                       key={index}
-                      className="bg-[#722ed1] w-[40px] h-[40px] text-white rounded-lg flex items-center justify-center "
+                      onPress={() => handleListSeat(seat.id)}
                     >
-                      <Text className="text-primary">{seat}</Text>
-                    </View>
+                      <View
+                        className={` ${
+                          !status[seat.id] ? "bg-[#722ed1]" : "bg-[#404040]"
+                        }  w-[40px] h-[40px] text-white rounded-lg flex items-center justify-center ${
+                          selectSeats.includes(seat?.id) && "opacity-50"
+                        }`}
+                      >
+                        <Text className="text-primary">{seat.name}</Text>
+                      </View>
+                    </TouchableOpacity>
                   );
                 })}
               </View>
@@ -52,15 +144,20 @@ export default function seat() {
           <View className="flex-1 border-t border-solid border-[#ccc] max-h-[300px] px-4 py-2">
             <View>
               <Text className="text-primary text-[24px] font-bold">
-                Kẻ trộm mặt trăng
+                {schedule?.film?.title}
               </Text>
               <View className="mt-1">
-                <Text className="text-title">15:00 ~ 17:03 | Thứ 6, 05/07</Text>
+                <Text className="text-title">
+                  {convertTimeSpan(schedule?.startTime)} -
+                  {convertTimeSpan(schedule?.endTime)} |
+                  {getDayOfWeek(schedule?.showDate?.date)},{" "}
+                  {convertTime(schedule?.showDate?.date)}
+                </Text>
               </View>
               <View className="flex-row items-center justify-between mt-4">
                 <Text className="text-primary">Tạm tính</Text>
                 <Text className="text-primary font-semibold text-[20px]">
-                  150.000d
+                  {convertVND(selectSeats.length * ticket?.price) || 0} đ
                 </Text>
               </View>
               <ButtonCustom

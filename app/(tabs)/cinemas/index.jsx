@@ -15,17 +15,13 @@ export default function cinemas() {
   const [cinemasCategory, setCinemasCategory] = useState({});
   const [cinemasCategoryId, setCinemasCategoryId] = useState("");
   const [cinemas, setCinemas] = useState([]);
-  const [isSelected, setIsSelected] = useState();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getAllCinemasCategories();
         setCinemasCategories(response.data);
-        console.log(response.data[0].id);
 
         setCinemasCategoryId(response.data[0].id);
-        setIsSelected(response.data[0].id);
-        console.log(response);
       } catch (error) {
         console.error("Lỗi Axios:", error);
       }
@@ -36,9 +32,7 @@ export default function cinemas() {
     if (!cinemasCategoryId) return;
     const fetchData = async () => {
       try {
-        console.log(cinemasCategoryId);
         const response = await GetCinemasByCategoryId(cinemasCategoryId);
-        console.log(response.data);
 
         setCinemas(response.data);
       } catch (error) {
