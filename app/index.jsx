@@ -1,11 +1,44 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonCustom from "./components/ButtonCustom";
 import { Redirect, router } from "expo-router";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getProfile } from "./Services/ServiceAPI";
 export default function App() {
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        setToken(token);
+      } catch (error) {
+        console.error("Lỗi Axios get token:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(token);
+
+    if (!token) return;
+    const fetchData = async () => {
+      try {
+        const user = await getProfile({
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        await AsyncStorage.setItem("user", JSON.stringify(user));
+        setUser(JSON.parse(await AsyncStorage.getItem("user")));
+        console.log(user);
+      } catch (error) {
+        console.error("Lỗi Axios set user:", error);
+      }
+    };
+    fetchData();
+  }, [token]);
   return (
     <View className="bg-primary h-full w-full">
       <StatusBar style="auto" />
@@ -38,7 +71,7 @@ export default function App() {
           ></ButtonCustom>
         </View>
       </SafeAreaView>
-      <Redirect href={"/cinemas"} />
+      {user && <Redirect href={"/home"} />}
     </View>
   );
 }

@@ -112,6 +112,11 @@ export const GetAllScheduleByShowDateAndCinemas = async (id, date, params) => {
   );
   return res;
 };
+
+export const getMyTickets = async (id, params) => {
+  const res = await get(`BookingUser/${id}`, params);
+  return res;
+};
 // get one
 
 export const GetAllShowDateByCinemasId = async (id, params) => {
@@ -469,5 +474,25 @@ export const SearchComment = async (params) => {
 
 export const SearchCinemasCategory = async (params) => {
   const res = await get(`CinemasCategories/search`, params);
+  return res;
+};
+// auth
+
+export const Login = async (params) => {
+  const res = await post(`Account/login`, params, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res;
+};
+export const register = async (params) => {
+  const res = await post(`Account/register`, params, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res;
+};
+export const getProfile = async (params) => {
+  const res = await get(`Account/profile`, params, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return res;
 };

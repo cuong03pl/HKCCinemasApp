@@ -1,10 +1,26 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Fontisto, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 export default function profile() {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = JSON.parse(await AsyncStorage.getItem("user"));
+      setUser(user.data);
+      console.log(user);
+    };
+    fetchData();
+  }, []);
+  const handleLogOut = async () => {
+    await AsyncStorage.clear();
+    router.push("/");
+  };
   return (
     <View className="bg-primary h-full w-full pb-[140px] px-[16px]">
       <StatusBar style="auto" />
@@ -18,16 +34,19 @@ export default function profile() {
           </View>
           <View>
             <Text className="text-[32px] text-primary font-bold">
-              Angela Trinh
+              {/* {user?.userName} */}
             </Text>
             <View className="flex-row items-center mt-4">
               <Fontisto name="email" size={20} color="#DEDEDE" />
-              <Text className="text-[#DEDEDE] ml-1">angelina@example.com</Text>
+              <Text className="text-[#DEDEDE] ml-1">{user?.email}</Text>
             </View>
           </View>
         </View>
         <View className="mt-8">
-          <TouchableOpacity className="border-b border-solid border-[#ccc] py-6">
+          <TouchableOpacity
+            onPress={handleLogOut}
+            className="border-b border-solid border-[#ccc] py-6"
+          >
             <View className="flex-row items-center justify-between">
               <View className="flex-row items-center">
                 <Ionicons name="ticket-outline" size={32} color="#FFFFFF" />

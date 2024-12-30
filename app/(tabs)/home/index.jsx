@@ -15,7 +15,7 @@ export default function home() {
         const response = await GetNowShowingFilms();
         setNowPlaying(response.data);
       } catch (error) {
-        console.error("Lỗi Axios:", error);
+        console.error("Lỗi Axios get now playing:", error);
       }
     };
     fetchData();
