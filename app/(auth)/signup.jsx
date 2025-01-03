@@ -16,6 +16,7 @@ import ButtonCustom from "../components/ButtonCustom";
 import { Link, router } from "expo-router";
 import { register } from "../Services/ServiceAPI";
 import WrapperComponent from "../components/Modal";
+import Octicons from "@expo/vector-icons/Octicons";
 
 export default function signup() {
   const [email, setEmail] = useState("");
@@ -24,6 +25,8 @@ export default function signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [message, setMessage] = useState("");
+  const [isHiddenPass, setIsHiddenPass] = useState(true);
+  const [isHiddenConfirm, setIsHiddenPassConfirm] = useState(true);
   const handleRegister = async () => {
     try {
       const formData = new FormData();
@@ -44,6 +47,12 @@ export default function signup() {
   };
   const handleCloseModal = () => {
     setIsVisible(false);
+  };
+  const handleTogglePassword = () => {
+    setIsHiddenPass(() => (isHiddenPass == true ? false : true));
+  };
+  const handleToggleConfirm = () => {
+    setIsHiddenPassConfirm(() => (isHiddenConfirm == true ? false : true));
   };
   return (
     <Fragment>
@@ -77,6 +86,7 @@ export default function signup() {
                       placeholder="Nhập email"
                       placeholderTextColor="#7B7B8B"
                       className="bg-[#1E1E2D] w-full p-[16px] rounded-lg font-semibold text-[#fff]"
+                      autoComplete="false"
                     />
                   </View>
 
@@ -89,6 +99,7 @@ export default function signup() {
                       placeholder="Nhập tên tài khoản"
                       placeholderTextColor="#7B7B8B"
                       className="bg-[#1E1E2D] p-[16px] rounded-lg font-semibold  text-[#fff]"
+                      autoComplete="false"
                     />
                   </View>
 
@@ -96,27 +107,65 @@ export default function signup() {
                     <Text className="text-subtext text-[16px] font-medium my-2">
                       Password
                     </Text>
-                    <TextInput
-                      secureTextEntry={true}
-                      onChangeText={(password) => setPassword(password)}
-                      placeholder="Nhập mật khẩu"
-                      placeholderTextColor="#7B7B8B"
-                      className="bg-[#1E1E2D] p-[16px] rounded-lg font-semibold text-[#fff]"
-                    />
+                    <View className="flex-row bg-[#1E1E2D] p-[16px] rounded-lg w-full items-center">
+                      <TextInput
+                        secureTextEntry={isHiddenPass}
+                        onChangeText={(password) => setPassword(password)}
+                        placeholder="Nhập mật khẩu"
+                        placeholderTextColor="#7B7B8B"
+                        className="flex-1 font-semibold text-[16px] text-[#fff] mr-2"
+                        autoComplete="false"
+                      />
+                      {!isHiddenPass ? (
+                        <Octicons
+                          onPress={handleTogglePassword}
+                          name="eye"
+                          size={24}
+                          color="white"
+                        />
+                      ) : (
+                        <Octicons
+                          onPress={handleTogglePassword}
+                          className="hidden"
+                          name="eye-closed"
+                          size={24}
+                          color="white"
+                        />
+                      )}
+                    </View>
                   </View>
                   <View>
                     <Text className="text-subtext text-[16px] font-medium my-2">
                       Confirm Password
                     </Text>
-                    <TextInput
-                      secureTextEntry={true}
-                      onChangeText={(confirmPassword) =>
-                        setConfirmPassword(confirmPassword)
-                      }
-                      placeholder="Nhập lại mật khẩu"
-                      placeholderTextColor="#7B7B8B"
-                      className="bg-[#1E1E2D] p-[16px] rounded-lg font-semibold text-[#fff]"
-                    />
+                    <View className="flex-row bg-[#1E1E2D] p-[16px] rounded-lg w-full items-center">
+                      <TextInput
+                        secureTextEntry={isHiddenConfirm}
+                        onChangeText={(confirmPassword) =>
+                          setConfirmPassword(confirmPassword)
+                        }
+                        placeholder="Nhập lại mật khẩu"
+                        placeholderTextColor="#7B7B8B"
+                        className="flex-1 font-semibold text-[16px] text-[#fff] mr-2"
+                        autoComplete="false"
+                      />
+                      {!isHiddenConfirm ? (
+                        <Octicons
+                          onPress={handleToggleConfirm}
+                          name="eye"
+                          size={24}
+                          color="white"
+                        />
+                      ) : (
+                        <Octicons
+                          onPress={handleToggleConfirm}
+                          className="hidden"
+                          name="eye-closed"
+                          size={24}
+                          color="white"
+                        />
+                      )}
+                    </View>
                   </View>
                   <View className="w-full mt-4">
                     <ButtonCustom

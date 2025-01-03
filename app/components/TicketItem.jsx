@@ -5,8 +5,6 @@ import { convertTimeSpan } from "../utils/function";
 import { convertTime } from "../utils/convertTime";
 import { IMAGE_URL } from "@env";
 export default function TicketItem({ ticket }) {
-  console.log(ticket?.detail[0]?.schedule?.film?.image);
-
   return (
     <View className="bg-search rounded-xl mb-4 ">
       <View className="flex-row items-center">

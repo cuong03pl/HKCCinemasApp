@@ -13,7 +13,6 @@ export default function profile() {
     const fetchData = async () => {
       const user = JSON.parse(await AsyncStorage.getItem("user"));
       setUser(user.data);
-      console.log(user);
     };
     fetchData();
   }, []);

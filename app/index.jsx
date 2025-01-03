@@ -22,8 +22,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log(token);
-
     if (!token) return;
     const fetchData = async () => {
       try {
@@ -32,7 +30,6 @@ export default function App() {
         });
         await AsyncStorage.setItem("user", JSON.stringify(user));
         setUser(JSON.parse(await AsyncStorage.getItem("user")));
-        console.log(user);
       } catch (error) {
         console.error("Lỗi Axios set user:", error);
       }
@@ -71,7 +68,8 @@ export default function App() {
           ></ButtonCustom>
         </View>
       </SafeAreaView>
-      {user && <Redirect href={"/home"} />}
+      {/* {user && <Redirect href={"/signin"} />} */}
+      <Redirect href={"/signin"} />
     </View>
   );
 }
