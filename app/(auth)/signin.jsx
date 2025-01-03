@@ -63,48 +63,52 @@ export default function signin() {
                 ></Image>
               </View>
               <View className="pt-4 w-full">
-                <Text className="text-subtext text-[16px] font-medium mb-2">
-                  Email
-                </Text>
-                <TextInput
-                  placeholder="Nhập username"
-                  onChangeText={(username) => setUsername(username)}
-                  defaultValue={username}
-                  placeholderTextColor="#7B7B8B"
-                  className="bg-[#1E1E2D] w-full p-[16px] text-[16px] rounded-lg font-semibold text-[#fff]"
-                  autoComplete="off"
-                />
-
-                <Text className="text-subtext text-[16px] font-medium mb-2">
-                  Password
-                </Text>
-                <View className="flex-row bg-[#1E1E2D] p-[16px] rounded-lg w-full items-center">
+                <View className="mb-4">
+                  <Text className="text-subtext text-[16px] font-medium mb-2">
+                    Email
+                  </Text>
                   <TextInput
-                    textContentType="password"
-                    secureTextEntry={isHidden}
-                    placeholder="Nhập mật khẩu"
-                    onChangeText={(password) => setPassword(password)}
-                    defaultValue={password}
+                    placeholder="Nhập username"
+                    onChangeText={(username) => setUsername(username)}
+                    defaultValue={username}
                     placeholderTextColor="#7B7B8B"
-                    className="  flex-1 font-semibold text-[16px] text-[#fff] mr-2"
+                    className="bg-[#1E1E2D] w-full p-[16px] text-[16px] rounded-lg font-semibold text-[#fff]"
                     autoComplete="off"
                   />
-                  {!isHidden ? (
-                    <Octicons
-                      onPress={handleTogglePassword}
-                      name="eye"
-                      size={24}
-                      color="white"
+                </View>
+
+                <View>
+                  <Text className="text-subtext text-[16px] font-medium mb-2">
+                    Password
+                  </Text>
+                  <View className="flex-row bg-[#1E1E2D] p-[16px] rounded-lg w-full items-center">
+                    <TextInput
+                      textContentType="password"
+                      secureTextEntry={isHidden}
+                      placeholder="Nhập mật khẩu"
+                      onChangeText={(password) => setPassword(password)}
+                      defaultValue={password}
+                      placeholderTextColor="#7B7B8B"
+                      className="  flex-1 font-semibold text-[16px] text-[#fff] mr-2"
+                      autoComplete="off"
                     />
-                  ) : (
-                    <Octicons
-                      onPress={handleTogglePassword}
-                      className="hidden"
-                      name="eye-closed"
-                      size={24}
-                      color="white"
-                    />
-                  )}
+                    {!isHidden ? (
+                      <Octicons
+                        onPress={handleTogglePassword}
+                        name="eye"
+                        size={24}
+                        color="white"
+                      />
+                    ) : (
+                      <Octicons
+                        onPress={handleTogglePassword}
+                        className="hidden"
+                        name="eye-closed"
+                        size={24}
+                        color="white"
+                      />
+                    )}
+                  </View>
                 </View>
 
                 <View className="w-full mt-4">

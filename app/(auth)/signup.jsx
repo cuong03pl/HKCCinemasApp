@@ -27,6 +27,7 @@ export default function signup() {
   const [message, setMessage] = useState("");
   const [isHiddenPass, setIsHiddenPass] = useState(true);
   const [isHiddenConfirm, setIsHiddenPassConfirm] = useState(true);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const handleRegister = async () => {
     try {
       const formData = new FormData();
@@ -39,14 +40,18 @@ export default function signup() {
       setMessage(respone.data[0].description || respone.data);
       if (respone.data) {
         setIsVisible(true);
-        router.push("/signin");
+        setIsLoginSuccess(true);
       }
     } catch (error) {
       console.log(error);
+
+      setIsVisible(true);
+      setMessage("Vui lòng nhập đúng thông tin");
     }
   };
   const handleCloseModal = () => {
     setIsVisible(false);
+    if (isLoginSuccess) router.push("/signin");
   };
   const handleTogglePassword = () => {
     setIsHiddenPass(() => (isHiddenPass == true ? false : true));
@@ -54,6 +59,7 @@ export default function signup() {
   const handleToggleConfirm = () => {
     setIsHiddenPassConfirm(() => (isHiddenConfirm == true ? false : true));
   };
+
   return (
     <Fragment>
       <KeyboardAvoidingView
@@ -77,7 +83,7 @@ export default function signup() {
                   ></Image>
                 </View>
                 <View className="pt-4">
-                  <View>
+                  <View className="mb-4">
                     <Text className="text-subtext text-[16px] font-medium my-2">
                       Email
                     </Text>
@@ -89,8 +95,7 @@ export default function signup() {
                       autoComplete="false"
                     />
                   </View>
-
-                  <View>
+                  <View className="mb-4">
                     <Text className="text-subtext text-[16px] font-medium my-2">
                       Username
                     </Text>
@@ -101,9 +106,11 @@ export default function signup() {
                       className="bg-[#1E1E2D] p-[16px] rounded-lg font-semibold  text-[#fff]"
                       autoComplete="false"
                     />
+                    <Text className="text-gray-500 text-[14px] mt-2 italic">
+                      Username chỉ chứa chữ và số
+                    </Text>
                   </View>
-
-                  <View>
+                  <View className="mb-4">
                     <Text className="text-subtext text-[16px] font-medium my-2">
                       Password
                     </Text>
@@ -133,8 +140,12 @@ export default function signup() {
                         />
                       )}
                     </View>
+                    <Text className="text-gray-500 text-[14px] mt-2 italic">
+                      Mật khẩu phải chứa ít nhất một chữ cái, một số và một ký
+                      tự đặc biệt.
+                    </Text>
                   </View>
-                  <View>
+                  <View className="mb-4">
                     <Text className="text-subtext text-[16px] font-medium my-2">
                       Confirm Password
                     </Text>
@@ -166,8 +177,12 @@ export default function signup() {
                         />
                       )}
                     </View>
+                    <Text className="text-gray-500 text-[14px] mt-2 italic">
+                      Mật khẩu phải chứa ít nhất một chữ cái, một số và một ký
+                      tự đặc biệt.
+                    </Text>
                   </View>
-                  <View className="w-full mt-4">
+                  <View className="w-full ">
                     <ButtonCustom
                       title="Đăng kí"
                       classWind="bg-btnSignIn text-[#000] w-full flex justify-center items-center h-[56px] rounded-full"
@@ -193,9 +208,7 @@ export default function signup() {
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
       <WrapperComponent onClose={handleCloseModal} isVisible={isVisible}>
-        <View className="flex-1 items-center justify-center bg-[#ccc] max-h-[50px] w-[200px]">
-          <Text className=" text-[16px] text-white">{message}</Text>
-        </View>
+        <Text className=" text-[16px] text-black font-medium">{message}</Text>
       </WrapperComponent>
     </Fragment>
   );
